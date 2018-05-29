@@ -1,21 +1,38 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import io from 'socket.io-client'
+import {socketConnect} from 'socket.io-react'
+import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'
 
-class App extends Component {
+const styles = {
+  root: {
+    width: "100%",
+    maxWidth: "900px",
+    textAlign: "center"
+  }
+}
+const events = ['board update', 'base', "reset", "player update"] 
+//base event simply shows text in middle of game; reset removes ALL data; player update updates player attributes; board update updates board attributes
+
+const emits = ['get players', 'get board']
+//gets all player attributes; gets all board attributes
+
+class App extends React.Component {
+  constructor(props){
+    super(props)
+    events.map((obj, i)=>{
+      props.socket.on(obj, (data)=>{console.log(data)})
+    })
+    this.state = {
+
+    }
+  }
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+      <div className="root" style={styles.root}>
+        hi
       </div>
     );
   }
 }
 
-export default App;
+export default socketConnect(App);
